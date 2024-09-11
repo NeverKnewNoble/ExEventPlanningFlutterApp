@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'frappecall/frappe_api.dart'; // Import the API file
+import 'frappecall/open_docs_count.dart'; 
+import 'frappecall/completed_doc_count.dart'; 
+import 'frappecall/cancelled_doc_count.dart'; 
+import 'frappecall/rescheduled_doc_count.dart';
 
 void main() async {
   runApp(const MaterialApp(
@@ -8,7 +11,7 @@ void main() async {
   ));
 }
 
-class FrontPage extends StatefulWidget { // Convert FrontPage to a StatefulWidget
+class FrontPage extends StatefulWidget {
   const FrontPage({super.key});
 
   @override
@@ -17,6 +20,9 @@ class FrontPage extends StatefulWidget { // Convert FrontPage to a StatefulWidge
 
 class FrontPageState extends State<FrontPage> {
   int _openBookings = 0; // State to hold the open bookings count
+  int _completedBookings = 0; // State to hold the completed bookings count
+  int _cancelledBookings = 0;
+  int _rescheduledBookings = 0;
   bool _isLoading = false; // Loading state
   String _errorMessage = ''; // Error message
 
@@ -24,8 +30,12 @@ class FrontPageState extends State<FrontPage> {
   void initState() {
     super.initState();
     _fetchOpenBookingsCount(); // Fetch open bookings when the widget is initialized
+    _fetchCompletedBookingsCount(); // Fetch completed bookings when the widget is initialized
+    _fetchCancelledEventCount();
+    _fetchRescheduleEventCount();
   }
 
+// ***************Functions calling API's******************
   Future<void> _fetchOpenBookingsCount() async {
     setState(() {
       _isLoading = true; // Start loading
@@ -48,6 +58,74 @@ class FrontPageState extends State<FrontPage> {
     }
   }
 
+  Future<void> _fetchCompletedBookingsCount() async {
+    setState(() {
+      _isLoading = true; // Start loading
+      _errorMessage = ''; // Clear any previous errors
+    });
+
+    try {
+      int count = await fetchCompletedEventCount(); // Fetch the completed count from the API
+      setState(() {
+        _completedBookings = count; // Update the count in the state
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to fetch completed bookings count'; // Update error message
+      });
+    } finally {
+      setState(() {
+        _isLoading = false; // Stop loading
+      });
+    }
+  }
+
+  Future<void> _fetchCancelledEventCount() async {
+    setState(() {
+      _isLoading = true; // Start loading
+      _errorMessage = ''; // Clear any previous errors
+    });
+
+    try {
+      int count = await fetchCancelledEventCount(); // Fetch the completed count from the API
+      setState(() {
+        _cancelledBookings = count; // Update the count in the state
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to fetch completed bookings count'; // Update error message
+      });
+    } finally {
+      setState(() {
+        _isLoading = false; // Stop loading
+      });
+    }
+  }
+
+  Future<void> _fetchRescheduleEventCount() async {
+    setState(() {
+      _isLoading = true; // Start loading
+      _errorMessage = ''; // Clear any previous errors
+    });
+
+    try {
+      int count = await fetchRescheduleEventCount(); // Fetch the completed count from the API
+      setState(() {
+        _rescheduledBookings = count; // Update the count in the state
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to fetch completed bookings count'; // Update error message
+      });
+    } finally {
+      setState(() {
+        _isLoading = false; // Stop loading
+      });
+    }
+  }
+
+
+// **************MAIN BUILD*****************
   @override
   Widget build(BuildContext context) {
     var exLogo = const Text(
@@ -98,12 +176,24 @@ class FrontPageState extends State<FrontPage> {
               children: [
                 cardWidget(
                   "Open Bookings",
-                  _isLoading ? 0 : _openBookings, // Display loading or count
+                  _isLoading ? 0 : _openBookings,
                   Colors.red,
                 ),
-                cardWidget("Completed Bookings", 0, Colors.green),
-                cardWidget("Cancelled Bookings", 0, Colors.orange),
-                cardWidget("Rescheduled Bookings", 0, Colors.blue),
+                cardWidget(
+                  "Completed Bookings",
+                  _isLoading ? 0 : _completedBookings, 
+                  Colors.green,
+                ),
+                cardWidget(
+                  "Cancelled Bookings",
+                  _isLoading ? 0 : _cancelledBookings, 
+                  Colors.orange,
+                ),
+                cardWidget(
+                  "Rescheduled Bookings",
+                  _isLoading ? 0 : _rescheduledBookings,
+                  Colors.blue,
+                ),
               ],
             ),
           ),
