@@ -8,7 +8,7 @@ var logger = Logger();
 Future<int> fetchRescheduleEventCount() async {
   try {
     // Define the API endpoint
-    var url = Uri.parse('http://127.0.0.1:8000/api/v2/method/ex_event_planning.api.get_reschedule_doc_count');
+    var url = Uri.parse('http://10.0.2.2:8000/api/v2/method/ex_event_planning.api.get_reschedule_doc_count');
 
     // Send a GET request
     var response = await http.get(
