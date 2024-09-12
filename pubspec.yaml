@@ -91,3 +91,18 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+
+
+
+
+
+flutter_native_splash:
+  color: "#6e60fe"
+  background_image: images/960__remove.png
+  android_12:
+    image: images/960__remove.png # Use the new 960x960 icon here
+    # icon_background_color: "#FFFFFF" # Adjust the background color if necessary
+  android_gravity: center
+  ios_content_mode: scaleAspectFit
+  fullscreen: true
