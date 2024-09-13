@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'frappecall/listview.dart'; 
 import 'main/pagebar.dart'; 
 
@@ -117,11 +117,51 @@ class EventPlanState extends State<EventPlan> {
       itemCount: events.length,
       itemBuilder: (context, index) {
         final event = events[index];
-        return ListTile(
-          title: Text(event['name'] ?? 'Unnamed Event'),
-          subtitle: Text(event['creation'] ?? 'Unknown Date'),
+        return MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: ListTile(
+              contentPadding: const EdgeInsets.all(16),
+              title: Text(
+                event['name'] ?? 'Unnamed Event',
+                style: const TextStyle(
+                  color: Color(0xFF6e60fe),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${event['customer'] ?? 'No customer'}',
+                      style: const TextStyle(
+                        color: Colors.black87, // Style for the customer
+                        fontWeight: FontWeight.bold, // Optional: make the customer field bold
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' - ${event['creation'] ?? 'Unknown Date'}',
+                      style: const TextStyle(
+                        color: Colors.black54, // Style for the creation date
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () {
+                // Handle tap event if needed
+              },
+            ),
+          ),
         );
       },
     );
   }
+
 }

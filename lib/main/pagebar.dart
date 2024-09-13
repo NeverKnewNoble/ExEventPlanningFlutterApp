@@ -1,6 +1,8 @@
 import 'package:ex_event_planning/event_plan.dart';
 import 'package:ex_event_planning/main.dart';
 import 'package:flutter/material.dart';
+import 'package:ex_event_planning/daily_report.dart';
+import 'package:ex_event_planning/account.dart';
 
 class MainScaffold extends StatefulWidget {
   final Widget body;
@@ -38,9 +40,23 @@ class MainScaffoldState extends State<MainScaffold> {
         MaterialPageRoute(builder: (context) => const EventPlan()),
         (route) => false,
       );
+    } else if (index == 2) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const DailyReport()),
+        (route) => false,
+      );
+    } else if (index == 3) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const AccountInfo()),
+        (route) => false,
+      );
     }
+
     // Add more navigation options for other indices if needed
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +77,8 @@ class MainScaffoldState extends State<MainScaffold> {
             label: 'Daily Report',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.article_outlined),
-            label: 'Event Report',
+            icon: Icon(Icons.account_circle_outlined),
+            label: 'Account',
           ),
         ],
         currentIndex: _selectedIndex,

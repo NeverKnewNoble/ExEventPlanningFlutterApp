@@ -27,6 +27,9 @@ Future<List<Map<String, dynamic>>> fetchEvents() async {
       // Parse the response body
       var responseData = jsonDecode(response.body);
 
+      // Log the parsed response data
+      logger.i('Parsed response data: $responseData');
+
       // Ensure the response contains a 'data' field and is a list
       if (responseData is Map<String, dynamic> && responseData['data'] is List) {
         // Return the list of events from the 'data' field
@@ -44,4 +47,3 @@ Future<List<Map<String, dynamic>>> fetchEvents() async {
     rethrow; // Rethrow the error
   }
 }
-
