@@ -83,7 +83,7 @@ class MainScaffoldState extends State<MainScaffold> {
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: const Color(0xFF6e60fe),
-        unselectedItemColor: Colors.grey,
+        unselectedItemColor: Colors.black,
         onTap: _onItemTapped,
       ),
     );

@@ -4,12 +4,13 @@ import 'frappecall/completed_doc_count.dart';
 import 'frappecall/cancelled_doc_count.dart';
 import 'frappecall/rescheduled_doc_count.dart';
 import 'main/pagebar.dart';
-import 'main/card_widget.dart'; 
+import 'main/card_widget.dart';
+import 'login.dart'; // Ensure this import is correct
 
 void main() {
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: FrontPage(),
+    home: LoginUI(),
   ));
 }
 
@@ -76,6 +77,14 @@ class FrontPageState extends State<FrontPage> {
     }
   }
 
+  void _logout() {
+    // Navigate back to the LoginUI
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginUI()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     const exLogo = Align(
@@ -90,12 +99,24 @@ class FrontPageState extends State<FrontPage> {
       ),
     );
 
+    const bk = Align(
+      alignment: Alignment.topLeft,
+      child: Text(
+        'Bookings',
+        style: TextStyle(
+          color: Color(0xFF6e60fe),
+          fontSize: 25,
+          fontWeight: FontWeight.bold
+        )
+        )
+      );
+
     return MainScaffold(
       selectedIndex: 0, // Set index for Home (FrontPage)
       body: Scaffold(
         appBar: AppBar(
           title: const Text(
-            'Ex Event Planner',
+            'Ex Event Planning',
             style: TextStyle(
               color: Colors.black,
               fontSize: 25,
@@ -104,6 +125,12 @@ class FrontPageState extends State<FrontPage> {
           ),
           backgroundColor: Colors.white,
           elevation: 0,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: _logout,
+            ),
+          ],
         ),
         backgroundColor: Colors.white,
         body: Padding(
@@ -113,7 +140,9 @@ class FrontPageState extends State<FrontPage> {
             children: [
               const SizedBox(height: 40),
               exLogo,
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
+              bk,
+              const SizedBox(height: 25),
               _isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : Expanded(
