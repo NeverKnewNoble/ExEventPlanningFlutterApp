@@ -56,6 +56,11 @@ class EventPlanState extends State<EventPlan> {
   Widget build(BuildContext context) {
     return MainScaffold(
       body: Scaffold(
+        floatingActionButton: FloatingActionButton(
+              onPressed: () {},
+              backgroundColor: const Color(0xFF6e60fe),
+              child: const Icon(Icons.add, color: Colors.white)
+        ),
         appBar: AppBar(
           title: const Text(
             'Event Planning',
@@ -158,6 +163,8 @@ class EventPlanState extends State<EventPlan> {
                 // Handle tap event if needed
               },
             ),
+
+            
           ),
         );
       },
