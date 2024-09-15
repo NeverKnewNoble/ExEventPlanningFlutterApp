@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'frappecall/listview.dart'; 
+import 'frappecall/form_info_data.dart'; // Adjust if the path is different
 import 'main/pagebar.dart'; 
+import 'innerpages/document.dart';
+import 'innerpages/form_info.dart';
 
 class EventPlan extends StatefulWidget {
   const EventPlan({super.key});
@@ -21,7 +23,7 @@ class EventPlanState extends State<EventPlan> {
     loadEvents();
   }
 
-  loadEvents() async {
+  Future<void> loadEvents() async {
     setState(() {
       isLoading = true;
       errorMessage = null;
@@ -35,19 +37,21 @@ class EventPlanState extends State<EventPlan> {
       });
     } catch (e) {
       if (kDebugMode) {
-        print(e);
+        print('Error fetching events: $e');
       }
       setState(() {
         isLoading = false;
-        errorMessage = 'Failed to load events. Please try again.';
+        errorMessage = 'Failed to load events. Please check your connection and try again.';
       });
     }
   }
 
-  // Widget for retry button (to avoid redundancy)
   Widget buildRetryButton() {
     return ElevatedButton(
       onPressed: loadEvents,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFF6e60fe),
+      ),
       child: const Text('Retry'),
     );
   }
@@ -57,9 +61,14 @@ class EventPlanState extends State<EventPlan> {
     return MainScaffold(
       body: Scaffold(
         floatingActionButton: FloatingActionButton(
-              onPressed: () {},
-              backgroundColor: const Color(0xFF6e60fe),
-              child: const Icon(Icons.add, color: Colors.white)
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const EventFormPage()),
+            );
+          },
+          backgroundColor: const Color(0xFF6e60fe),
+          child: const Icon(Icons.add, color: Colors.white),
         ),
         appBar: AppBar(
           title: const Text(
@@ -70,22 +79,21 @@ class EventPlanState extends State<EventPlan> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          backgroundColor: Colors.white, // Consistent app color
+          backgroundColor: Colors.white,
         ),
         backgroundColor: Colors.white,
         body: isLoading
-            ? const Center(child: CircularProgressIndicator()) // Loading state
+            ? const Center(child: CircularProgressIndicator())
             : errorMessage != null
-                ? buildErrorState() // Error handling state
+                ? buildErrorState()
                 : events.isEmpty
-                    ? buildEmptyState() // Empty list state
-                    : buildEventList(), // Display the list of events
+                    ? buildEmptyState()
+                    : buildEventList(),
       ),
-      selectedIndex: 1, // Set the selected index for Event Planning
+      selectedIndex: 1,
     );
   }
 
-  // Widget for error state UI
   Widget buildErrorState() {
     return Center(
       child: Column(
@@ -102,7 +110,6 @@ class EventPlanState extends State<EventPlan> {
     );
   }
 
-  // Widget for empty state UI
   Widget buildEmptyState() {
     return Center(
       child: Column(
@@ -116,14 +123,23 @@ class EventPlanState extends State<EventPlan> {
     );
   }
 
-  // Widget to build the event list UI
   Widget buildEventList() {
     return ListView.builder(
       itemCount: events.length,
       itemBuilder: (context, index) {
         final event = events[index];
-        return MouseRegion(
-          cursor: SystemMouseCursors.click,
+        return GestureDetector(
+          onTap: () {
+            print('Tapped event: ${event['name']}'); // Debug statement
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FormInfo(event: event),
+              ),
+            ).then((_) {
+              print('Returned from FormInfo'); // Debug statement
+            });
+          },
           child: Container(
             margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
             decoration: BoxDecoration(
@@ -146,29 +162,23 @@ class EventPlanState extends State<EventPlan> {
                     TextSpan(
                       text: '${event['customer'] ?? 'No customer'}',
                       style: const TextStyle(
-                        color: Colors.black87, // Style for the customer
-                        fontWeight: FontWeight.bold, // Optional: make the customer field bold
+                        color: Colors.black87,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     TextSpan(
                       text: ' - ${event['creation'] ?? 'Unknown Date'}',
                       style: const TextStyle(
-                        color: Colors.black54, // Style for the creation date
+                        color: Colors.black54,
                       ),
                     ),
                   ],
                 ),
               ),
-              onTap: () {
-                // Handle tap event if needed
-              },
             ),
-
-            
           ),
         );
       },
     );
   }
-
 }
