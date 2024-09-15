@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'frappecall/form_info_data.dart'; // Adjust if the path is different
+// import 'frappecall/listview.dart';
 import 'main/pagebar.dart'; 
 import 'innerpages/document.dart';
 import 'innerpages/form_info.dart';
@@ -130,14 +131,18 @@ class EventPlanState extends State<EventPlan> {
         final event = events[index];
         return GestureDetector(
           onTap: () {
-            print('Tapped event: ${event['name']}'); // Debug statement
+            if (kDebugMode) {
+              print('Tapped event: ${event['name']}');
+            } // Debug statement
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => FormInfo(event: event),
               ),
             ).then((_) {
-              print('Returned from FormInfo'); // Debug statement
+              if (kDebugMode) {
+                print('Returned from FormInfo');
+              } // Debug statement
             });
           },
           child: Container(
@@ -167,7 +172,7 @@ class EventPlanState extends State<EventPlan> {
                       ),
                     ),
                     TextSpan(
-                      text: ' - ${event['creation'] ?? 'Unknown Date'}',
+                      text: ' - ${event['creation'] ?? ''}',
                       style: const TextStyle(
                         color: Colors.black54,
                       ),
