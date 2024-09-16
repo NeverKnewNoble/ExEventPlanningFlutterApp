@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'frappecall/form_info_data.dart'; // Adjust if the path is different
 // import 'frappecall/listview.dart';
 import 'main/pagebar.dart'; 
-import 'innerpages/document.dart';
+// import 'innerpages/document.dart';
 import 'innerpages/form_info.dart';
 
 class EventPlan extends StatefulWidget {
@@ -61,16 +61,16 @@ class EventPlanState extends State<EventPlan> {
   Widget build(BuildContext context) {
     return MainScaffold(
       body: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const EventFormPage()),
-            );
-          },
-          backgroundColor: const Color(0xFF6e60fe),
-          child: const Icon(Icons.add, color: Colors.white),
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(builder: (context) => const EventFormPage()),
+        //     );
+        //   },
+        //   backgroundColor: const Color(0xFF6e60fe),
+        //   child: const Icon(Icons.add, color: Colors.white),
+        // ),
         appBar: AppBar(
           title: const Text(
             'Event Planning',
