@@ -1,14 +1,19 @@
-import 'package:ex_event_planning/event_plan.dart';
 import 'package:ex_event_planning/main.dart';
 import 'package:flutter/material.dart';
+import 'package:ex_event_planning/event_plan.dart';
 import 'package:ex_event_planning/daily_report.dart';
 import 'package:ex_event_planning/account.dart';
+import 'package:ex_event_planning/globals.dart'; // Import the globals file
 
 class MainScaffold extends StatefulWidget {
   final Widget body;
   final int selectedIndex;
 
-  const MainScaffold({super.key, required this.body, required this.selectedIndex});
+  const MainScaffold({
+    super.key,
+    required this.body,
+    required this.selectedIndex,
+  });
 
   @override
   MainScaffoldState createState() => MainScaffoldState();
@@ -49,14 +54,15 @@ class MainScaffoldState extends State<MainScaffold> {
     } else if (index == 3) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => const AccountInfo()),
+        MaterialPageRoute(
+          builder: (context) => AccountInfo(fullName: globalFullName ?? 'User'), // Use the global variable
+        ),
         (route) => false,
       );
     }
 
     // Add more navigation options for other indices if needed
   }
-
 
   @override
   Widget build(BuildContext context) {

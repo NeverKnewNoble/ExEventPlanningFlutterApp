@@ -1,7 +1,9 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'main.dart'; // Import the main.dart file to access FrontPage
+// Import the main.dart file to access FrontPage
 import 'frappecall/login_post_call.dart'; // Import the API call function
+import 'account.dart'; // Import the AccountInfo page
+import 'globals.dart';
 
 class LoginUI extends StatefulWidget {
   const LoginUI({super.key});
@@ -12,11 +14,10 @@ class LoginUI extends StatefulWidget {
 
 class LoginUIState extends State<LoginUI> {
   final _formKey = GlobalKey<FormState>();
-  String? _email; // Changed to String? to handle null values
-  String? _password; // Changed to String? to handle null values
-  bool _isLoading = false; // To show loading indicator during API call
+  String? _email;
+  String? _password;
+  bool _isLoading = false;
 
-  // Function to handle the login process
   Future<void> _login() async {
     if (_formKey.currentState?.validate() ?? false) {
       _formKey.currentState?.save();
@@ -25,27 +26,28 @@ class LoginUIState extends State<LoginUI> {
       });
 
       try {
-        // Call the API
         final response = await verifyLogin(_email!, _password!);
+        print('API Response: $response'); // Log the response
 
         setState(() {
           _isLoading = false;
         });
 
-        // Check if the widget is still mounted before navigating
         if (!mounted) return;
 
-        // Access the "data" field in the response
-        if (response['data']['status'] == 'success') {
-          // Navigate to FrontPage on successful login
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const FrontPage()),
-          );
+        if (response['status'] == 'success') {
+        final String fullName = response['full_name'] ?? 'User';
+        globalFullName = fullName; // Set the global variable
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AccountInfo(fullName: fullName), // Pass the fullName parameter
+          ),
+        );
         } else {
-          // Show an error message if login fails
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(response['data']['message'] ?? 'Login failed')),
+            SnackBar(content: Text(response['message'] ?? 'Login failed')),
           );
         }
       } catch (e) {
@@ -53,17 +55,15 @@ class LoginUIState extends State<LoginUI> {
           _isLoading = false;
         });
 
-        // Check if the widget is still mounted before showing a SnackBar
         if (!mounted) return;
 
-        // Handle network or other errors
+        print('Error: $e'); // Log the error
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Something went wrong. Please try again.')),
         );
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +154,7 @@ class LoginUIState extends State<LoginUI> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: const Color(0xFF6e60fe), // Text color of the button
+                    backgroundColor: const Color(0xFF6e60fe), // Button background color
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0), // Rounded corners
                     ),

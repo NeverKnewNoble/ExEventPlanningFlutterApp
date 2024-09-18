@@ -3,7 +3,9 @@ import 'main/pagebar.dart'; // Ensure this path is correct
 import 'login.dart'; // Ensure this import is correct
 
 class AccountInfo extends StatefulWidget {
-  const AccountInfo({super.key});
+  final String fullName; // Field to hold the user's full name
+
+  const AccountInfo({Key? key, required this.fullName}) : super(key: key);
 
   @override
   State<AccountInfo> createState() => _AccountInfoState();
@@ -21,7 +23,7 @@ class _AccountInfoState extends State<AccountInfo> {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      selectedIndex: 3,
+      selectedIndex: 3, // Ensure MainScaffold properly uses this index
       body: Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -50,9 +52,9 @@ class _AccountInfoState extends State<AccountInfo> {
                       child: Icon(Icons.person, color: Colors.black), // Placeholder icon
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      'Larry-Noble', // Placeholder name
-                      style: TextStyle(
+                    Text(
+                      widget.fullName, // Use widget.fullName to display the user's full name
+                      style: const TextStyle(
                         color: Color(0xFF6e60fe),
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -69,16 +71,17 @@ class _AccountInfoState extends State<AccountInfo> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      child: const Text('Logout',
-                      style: TextStyle(
-                        color: Colors.white
-                       ),
-                     ),
+                      child: const Text(
+                        'Logout',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 70),
+              const SizedBox(height: 25),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(

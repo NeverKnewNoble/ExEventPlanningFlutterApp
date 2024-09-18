@@ -90,7 +90,7 @@ class FrontPageState extends State<FrontPage> {
     const exLogo = Align(
       alignment: Alignment.topLeft,
       child: Text(
-        "Welcome",
+        "Bookings",
         style: TextStyle(
           color: Color(0xFF6e60fe),
           fontSize: 40,
@@ -99,17 +99,6 @@ class FrontPageState extends State<FrontPage> {
       ),
     );
 
-    const bk = Align(
-      alignment: Alignment.topLeft,
-      child: Text(
-        'Bookings',
-        style: TextStyle(
-          color: Color(0xFF6e60fe),
-          fontSize: 25,
-          fontWeight: FontWeight.bold
-        )
-        )
-      );
 
     return MainScaffold(
       selectedIndex: 0, // Set index for Home (FrontPage)
@@ -140,8 +129,6 @@ class FrontPageState extends State<FrontPage> {
             children: [
               const SizedBox(height: 40),
               exLogo,
-              const SizedBox(height: 20),
-              bk,
               const SizedBox(height: 25),
               _isLoading
                   ? const Center(child: CircularProgressIndicator())
